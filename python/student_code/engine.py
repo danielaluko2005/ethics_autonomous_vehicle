@@ -33,8 +33,56 @@ def decide(scenario):
     # This is an overly simple rule that only saves the passengers if there are
     # more passengers than pedestrians.
 
-    if len(scenario.passengers) > len(scenario.pedestrians):
-        return "passengers"
-    else:
-        return "pedestrians"
+   
+    # else:
+    #     return "pedestrians"
     
+    # if len(scenario.passengers) > len(scenario.pedestrians):
+    #     return "passengers"
+    
+    pedestrianAnimalCount=0
+    passengerHumanCount=0
+    pedestrialAnimalCount=0
+    # I prioritize legal crossing over any other factor.(I prioritize the law over sentiments but there are exceptions such as if its an animals)
+    if scenario.legalCrossing:
+       
+        # If the passengers are way greater than the pedestrians then save the passengers even though it's a legal crossing because it would rarely happen and it would do the world a greater good. 
+        if len(scenario.passengers) > len(scenario.pedestrians)+100:
+            return "passengers"
+        
+        # Save the pedestrians regardless if they are crossing legally or not as long as all the passengers are animals.
+        for person in scenario.pedestrians:
+            if person.charType=="human":
+                pedestrialAnimalCount+=1
+        for person in scenario.passengers:
+            if person.charType=="human":
+                passengerHumanCount+=1
+        if pedestrianAnimalCount==0:
+            if passengerHumanCount>0:
+                return "passengers"
+
+
+        # if scenario.pedsInLane:
+        #     return "pedestrians"
+        return "pedestrians"
+    else:
+           
+        # If the pedestrians are way greater than the passengers then save the pedestrians even though it's an illegal crossing because it would rarely happen and it would do the world a greater good. 
+        if len(scenario.pedestrians) > len(scenario.passengers)+100:
+            return "pedestrians"
+        
+          # Checks if the pedestrians crossing illegally are only animals and if they are only animals then check if the passenger has at least one human.
+        for person in scenario.passengers:
+            if person.charType=="human":
+                passengerHumanCount+=1
+        for person in scenario.pedestrians:
+            if person.charType=="human":
+                pedestrianAnimalCount+=1
+        
+        if passengerHumanCount==0:
+            if pedestrialAnimalCount>0:
+                return "pedestrians"
+
+    
+
+        return "passengers"

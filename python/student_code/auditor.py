@@ -93,7 +93,7 @@ def audit():
 def calcRatio(live, die):
     ratio = live/(live + die)
     percent = round(ratio * 100, 2)
-    return percent;
+    return percent
 
 
 if __name__ == '__main__':
